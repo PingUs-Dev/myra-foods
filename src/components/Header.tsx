@@ -1,3 +1,5 @@
+// src/components/Header.tsx - REPLACE YOUR EXISTING FILE WITH THIS
+
 import React, { useState } from 'react';
 import { ShoppingCart, Menu, X, Phone } from 'lucide-react';
 import { useCart } from './CartProvider';
@@ -7,6 +9,7 @@ const Header = () => {
   const { getTotalItems, getTotalPrice } = useCart();
 
   const navItems = [
+    { name: 'All Products', href: '/products' },
     { name: 'Corporate', href: '#snack-boxes' },
     { name: 'Festive & other events', href: '#event-boxes' },
     { name: 'Birthday', href: '#catering' },
@@ -23,6 +26,25 @@ const Header = () => {
     e.preventDefault();
     window.history.pushState({}, '', '/');
     window.dispatchEvent(new CustomEvent('navigate'));
+  };
+
+  const navigateToProducts = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.history.pushState({}, '', '/products');
+    window.dispatchEvent(new CustomEvent('navigate'));
+  };
+
+  const handleNavClick = (e: React.MouseEvent, item: any) => {
+    if (item.href === '/products') {
+      navigateToProducts(e);
+    } else if (item.href.startsWith('#')) {
+      if (window.location.pathname !== '/') {
+        navigateToHome(e);
+        setTimeout(() => {
+          document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
   };
 
   return (
@@ -45,15 +67,7 @@ const Header = () => {
               <a
                 key={item.name}
                 href={item.href}
-                onClick={(e) => {
-                  // If we're on cart page, go to home first
-                  if (window.location.pathname === '/cart') {
-                    navigateToHome(e);
-                    setTimeout(() => {
-                      document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
-                    }, 100);
-                  }
-                }}
+                onClick={(e) => handleNavClick(e, item)}
                 className="text-gray-700 hover:text-green-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
               >
                 {item.name}
@@ -67,7 +81,7 @@ const Header = () => {
               <Phone className="h-4 w-4" />
               <a href="mailto:sanjaibalasubramaniam26@gmail.com" className="text-sm">Contact</a>
             </div>
-            {/* Cart Button with Items Count and Total */}
+            {/* Cart Button */}
             <button
               onClick={navigateToCart}
               className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2 relative"
@@ -91,7 +105,6 @@ const Header = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-3">
-            {/* Mobile Cart Button */}
             <button
               onClick={navigateToCart}
               className="relative bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-lg"
@@ -124,12 +137,7 @@ const Header = () => {
                   className="text-gray-700 hover:text-green-700 px-3 py-2 rounded-md text-base font-medium"
                   onClick={(e) => {
                     setIsMenuOpen(false);
-                    if (window.location.pathname === '/cart') {
-                      navigateToHome(e);
-                      setTimeout(() => {
-                        document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
-                      }, 100);
-                    }
+                    handleNavClick(e, item);
                   }}
                 >
                   {item.name}
@@ -140,7 +148,6 @@ const Header = () => {
                   <Phone className="h-4 w-4" />
                   <a href="mailto:sanjaibalasubramaniam26@gmail.com" className="text-sm">Contact</a>
                 </div>
-                {/* Mobile Cart Info */}
                 <div className="text-right">
                   <div className="text-sm font-medium text-gray-700">
                     {getTotalItems()} items
