@@ -1,11 +1,4 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
-=======
-// src/App.tsx - REPLACE YOUR EXISTING FILE WITH THIS
-
-import React, { useState, useEffect } from 'react';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
 import { CartProvider } from './components/CartProvider';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -15,7 +8,6 @@ import Footer from './components/Footer';
 import SearchBar from './components/SearchBar';
 import ProductModal from './components/ProductModal';
 import Cart from './components/Cart';
-<<<<<<< HEAD
 import OwnBox from './components/OwnBox';
 
 interface Product {
@@ -34,13 +26,6 @@ interface Product {
   };
   deliveryTime?: string;
 }
-=======
-import AdminLogin from './components/admin/AdminLogin';
-import AdminDashboard from './components/admin/AdminDashboard';
-import AllProducts from './components/products/AllProducts';
-import { getFeaturedProducts } from './services/productService';
-import { Product } from './types/product';
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
 
 interface SearchFilters {
   priceRange: [number, number];
@@ -48,14 +33,9 @@ interface SearchFilters {
   sortBy: string;
 }
 
-<<<<<<< HEAD
 // Main App Component - Wrapped inside CartProvider
 const AppContent = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-=======
-const AppContent = () => {
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('home');
   const [searchQuery, setSearchQuery] = useState('');
@@ -64,71 +44,29 @@ const AppContent = () => {
     category: 'all',
     sortBy: 'relevance'
   });
-<<<<<<< HEAD
 
   // Handle URL changes
-=======
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const { currentUser } = useAuth();
-
-  useEffect(() => {
-    loadProducts();
-  }, []);
-
-  const loadProducts = async () => {
-    try {
-      setLoading(true);
-      const data = await getFeaturedProducts();
-      setProducts(data);
-    } catch (error) {
-      console.error('Error loading products:', error);
-      setProducts([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
   useEffect(() => {
     const updatePageFromURL = () => {
       const path = window.location.pathname;
       if (path === '/cart') {
         setCurrentPage('cart');
-<<<<<<< HEAD
-=======
-      } else if (path === '/admin') {
-        setCurrentPage('admin');
-      } else if (path === '/admin/dashboard') {
-        setCurrentPage('admin-dashboard');
-      } else if (path === '/products') {
-        setCurrentPage('products');
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
       } else {
         setCurrentPage('home');
       }
     };
 
-<<<<<<< HEAD
     // Set initial page
     updatePageFromURL();
 
     // Listen for navigation changes
-=======
-    updatePageFromURL();
-
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
     const handlePopState = () => {
       updatePageFromURL();
     };
 
     window.addEventListener('popstate', handlePopState);
-<<<<<<< HEAD
     
     // Custom event for programmatic navigation
-=======
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
     window.addEventListener('navigate', handlePopState as any);
 
     return () => {
@@ -137,7 +75,6 @@ const AppContent = () => {
     };
   }, []);
 
-<<<<<<< HEAD
   const snackBoxes = [
     {
       id: 1,
@@ -215,7 +152,7 @@ const AppContent = () => {
       id: 7,
       name: 'Small Event Catering',
       price: '₹1799',
-      image: '🍽️',
+      image: '🍽',
       description: 'Complete catering solution for events up to 20 people.',
       rating: 4.6,
       ingredients: ['Main Course', 'Appetizers', 'Desserts', 'Beverages'],
@@ -285,9 +222,6 @@ const AppContent = () => {
   const allProducts = [...snackBoxes, ...eventBoxes, ...catering, ...otherProducts];
 
   const handleProductClick = (product: Product) => {
-=======
-  const handleProductClick = (product: any) => {
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
     setSelectedProduct(product);
     setIsModalOpen(true);
   };
@@ -297,22 +231,14 @@ const AppContent = () => {
     setSearchFilters(filters);
   };
 
-<<<<<<< HEAD
   const filterProducts = (products: Product[]) => {
     if (!searchQuery && searchFilters.category === 'all') return products;
     
     return products.filter(product => {
-=======
-  const filterProducts = (productList: Product[]) => {
-    if (!searchQuery && searchFilters.category === 'all') return productList;
-    
-    return productList.filter(product => {
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
       const matchesQuery = !searchQuery || 
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.description.toLowerCase().includes(searchQuery.toLowerCase());
       
-<<<<<<< HEAD
       const price = parseInt(product.price.replace('₹', ''));
       const matchesPrice = price >= searchFilters.priceRange[0] && price <= searchFilters.priceRange[1];
       
@@ -321,57 +247,20 @@ const AppContent = () => {
         (searchFilters.category === 'festive' && eventBoxes.includes(product as any)) ||
         (searchFilters.category === 'birthday' && otherProducts.includes(product as any)) ||
         (searchFilters.category === 'catering' && catering.includes(product as any));
-=======
-      const matchesPrice = product.price >= searchFilters.priceRange[0] && 
-                          product.price <= searchFilters.priceRange[1];
-      
-      const matchesCategory = searchFilters.category === 'all' || 
-        product.category === searchFilters.category;
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
       
       return matchesQuery && matchesPrice && matchesCategory;
     });
   };
 
-<<<<<<< HEAD
   // Render current page
-=======
-  // Route to appropriate page
-  if (currentPage === 'admin') {
-    return <AdminLogin />;
-  }
-
-  if (currentPage === 'admin-dashboard') {
-    if (!currentUser) {
-      window.location.href = '/admin';
-      return null;
-    }
-    return <AdminDashboard />;
-  }
-
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
   if (currentPage === 'cart') {
     return <Cart />;
   }
 
-<<<<<<< HEAD
-=======
-  if (currentPage === 'products') {
-    return <AllProducts />;
-  }
-
-  // Group products by category
-  const corporateProducts = products.filter(p => p.category === 'corporate');
-  const festiveProducts = products.filter(p => p.category === 'festive');
-  const birthdayProducts = products.filter(p => p.category === 'birthday');
-  const cateringProducts = products.filter(p => p.category === 'catering');
-
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
   return (
     <>
       <Header />
       <Hero />
-<<<<<<< HEAD
       <SearchBar onSearch={handleSearch} products={allProducts} />
       
       <ProductSection
@@ -395,6 +284,7 @@ const AppContent = () => {
         products={filterProducts(otherProducts)}
         onProductClick={handleProductClick}
       />
+      <OwnBox />
       <ProductSection
         id="other-products"
         title="Catering"
@@ -402,49 +292,6 @@ const AppContent = () => {
         products={filterProducts(catering)}
         onProductClick={handleProductClick}
       />
-      
-      <OwnBox />
-=======
-      <SearchBar onSearch={handleSearch} products={products as any} />
-      
-      {loading ? (
-        <div className="py-20 text-center">
-          <div className="animate-spin h-12 w-12 border-4 border-green-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading products...</p>
-        </div>
-      ) : (
-        <>
-          <ProductSection
-            id="snack-boxes"
-            title="Corporate"
-            subtitle="Curated snack collections specially designed for businesses, meetings, and corporate events."
-            products={filterProducts(corporateProducts) as any}
-            onProductClick={handleProductClick}
-          />
-          <ProductSection
-            id="event-boxes"
-            title="Festive & Other Events"
-            subtitle="Thoughtfully crafted snack boxes perfect for celebrations, festivals, corporate meetings, and special occasions."
-            products={filterProducts(festiveProducts) as any}
-            onProductClick={handleProductClick}
-          />
-          <ProductSection
-            id="catering"
-            title="Birthday"
-            subtitle="Professional catering for birthdays of all sizes, offering curated snack boxes and exceptional service."
-            products={filterProducts(birthdayProducts) as any}
-            onProductClick={handleProductClick}
-          />
-          <ProductSection
-            id="other-products"
-            title="Catering"
-            subtitle="Delicious dishes and special foods for every occasion, from small gatherings to big celebrations."
-            products={filterProducts(cateringProducts) as any}
-            onProductClick={handleProductClick}
-          />
-        </>
-      )}
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
       
       <Testimonials />
       <Footer />
@@ -458,7 +305,6 @@ const AppContent = () => {
   );
 };
 
-<<<<<<< HEAD
 // Main App Component with CartProvider wrapper
 function App() {
   return (
@@ -467,17 +313,6 @@ function App() {
         <AppContent />
       </div>
     </CartProvider>
-=======
-function App() {
-  return (
-    <AuthProvider>
-      <CartProvider>
-        <div className="min-h-screen">
-          <AppContent />
-        </div>
-      </CartProvider>
-    </AuthProvider>
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
   );
 }
 

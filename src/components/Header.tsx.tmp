@@ -11,7 +11,6 @@ const Header = () => {
     { name: 'Corporate', href: '#snack-boxes' },
     { name: 'Festive & other events', href: '#event-boxes' },
     { name: 'Birthday', href: '#catering' },
-    { name: 'Create Your Own Box', href: '#own-box' },
     { name: 'Catering', href: '#other-products' },
   ];
 
@@ -80,7 +79,7 @@ const Header = () => {
               <Phone className="h-4 w-4" />
               <a href="mailto:sanjaibalasubramaniam26@gmail.com" className="text-sm">Contact</a>
             </div>
-            {/* Cart Button with Items Count and Total */}
+            {/* Cart Button */}
             <button
               onClick={navigateToCart}
               className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2 relative"
@@ -104,7 +103,6 @@ const Header = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-3">
-            {/* Mobile Cart Button */}
             <button
               onClick={navigateToCart}
               className="relative bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-lg"
@@ -148,7 +146,6 @@ const Header = () => {
                   <Phone className="h-4 w-4" />
                   <a href="mailto:sanjaibalasubramaniam26@gmail.com" className="text-sm">Contact</a>
                 </div>
-                {/* Mobile Cart Info */}
                 <div className="text-right">
                   <div className="text-sm font-medium text-gray-700">
                     {getTotalItems()} items

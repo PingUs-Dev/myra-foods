@@ -1,19 +1,12 @@
 import express from "express";
-<<<<<<< HEAD
 import { fileURLToPath } from "url";
 import path from "path";
 import nodemailer from "nodemailer";
-=======
-import {fileURLToPath} from "url";
-import path from "path";
-
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-<<<<<<< HEAD
 const PORT = 3000;
 
 // Middleware
@@ -46,328 +39,167 @@ const generateCustomerEmail = (order) => {
     .join('');
 
   return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Order Confirmation - Myra Foods</title>
-      <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f0fdf4 0%, #fffbeb 100%); padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); overflow: hidden; }
-        .header { background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%); color: white; padding: 30px; text-align: center; }
-        .header h1 { font-size: 28px; margin-bottom: 5px; }
-        .header p { font-size: 14px; opacity: 0.9; }
-        .content { padding: 30px; }
-        .section { margin-bottom: 30px; }
-        .section-title { font-size: 18px; font-weight: 700; color: #1f2937; margin-bottom: 15px; }
-        .info-box { background: #f9fafb; border-left: 4px solid #16a34a; padding: 15px; border-radius: 4px; margin-bottom: 10px; }
-        .info-label { font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; }
-        .info-value { font-size: 16px; color: #1f2937; font-weight: 600; margin-top: 5px; }
-        .order-id { background: linear-gradient(135deg, #fef3c7 0%, #fef08a 100%); border: 2px solid #eab308; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 20px; }
-        .order-id-label { font-size: 12px; color: #92400e; text-transform: uppercase; }
-        .order-id-value { font-size: 24px; font-weight: 700; color: #16a34a; margin-top: 5px; font-family: 'Courier New', monospace; }
-        .items-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        .items-table th { background: #f3f4f6; padding: 12px 16px; text-align: left; font-weight: 600; color: #4b5563; font-size: 13px; border-bottom: 2px solid #e5e7eb; }
-        .summary-box { background: #f9fafb; border-radius: 8px; padding: 20px; margin: 20px 0; }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; }
-        .summary-row.total { border-top: 2px solid #e5e7eb; padding-top: 12px; margin-top: 12px; font-size: 18px; font-weight: 700; color: #16a34a; }
-        .delivery-estimate { background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 100%); border-left: 4px solid #0284c7; padding: 15px; border-radius: 4px; margin: 20px 0; }
-        .delivery-estimate p { color: #0c4a6e; font-size: 14px; line-height: 1.6; }
-        .footer { background: #f9fafb; padding: 20px; text-align: center; border-top: 1px solid #e5e7eb; }
-        .footer p { font-size: 12px; color: #6b7280; margin: 5px 0; }
-        .badge { display: inline-block; background: #dbeafe; color: #0c4a6e; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-right: 10px; }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <div class="header">
-          <h1>🎉 Order Confirmed!</h1>
-          <p>Thank you for your order with Myra Foods</p>
-        </div>
-        <div class="content">
-          <div style="font-size: 48px; text-align: center; margin: 20px 0;">✅</div>
-          <div class="order-id">
-            <div class="order-id-label">Order ID</div>
-            <div class="order-id-value">${order.id}</div>
-          </div>
-          <div class="section">
-            <h2 class="section-title">✓ Delivery Details</h2>
-            <div class="info-box">
-              <div class="info-label">👤 Name</div>
-              <div class="info-value">${order.customerName}</div>
-            </div>
-            <div class="info-box">
-              <div class="info-label">📱 Phone</div>
-              <div class="info-value">${order.customerPhone}</div>
-            </div>
-            <div class="info-box">
-              <div class="info-label">📍 Delivery Address</div>
-              <div class="info-value">${order.deliveryAddress}</div>
-            </div>
-            <div class="info-box">
-              <div class="info-label">⏰ Order Time</div>
-              <div class="info-value">${order.orderTime}</div>
-            </div>
-          </div>
-          <div class="section">
-            <h2 class="section-title">✓ Order Summary</h2>
-            <table class="items-table">
-              <thead>
-                <tr>
-                  <th>Item</th>
-                  <th style="text-align: center;">Qty</th>
-                  <th style="text-align: right;">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${itemsHTML}
-              </tbody>
-            </table>
-            <div class="summary-box">
-              <div class="summary-row">
-                <span>Subtotal (${order.items.length} items)</span>
-                <span>₹${order.subtotal}</span>
-              </div>
-              <div class="summary-row">
-                <span>Delivery Fee ${order.deliveryFee === 0 ? '(FREE)' : ''}</span>
-                <span>${order.deliveryFee === 0 ? '🎉 FREE' : '₹' + order.deliveryFee}</span>
-              </div>
-              <div class="summary-row">
-                <span>Taxes & Charges</span>
-                <span>₹${order.tax}</span>
-              </div>
-              <div class="summary-row total">
-                <span>Total Amount</span>
-                <span>₹${order.total}</span>
-              </div>
-            </div>
-          </div>
-          <div class="delivery-estimate">
-            <p><strong>🚚 Estimated Delivery:</strong> 30-45 minutes</p>
-            <p>Your order has been confirmed and is being prepared. You'll receive a notification when it's on its way!</p>
-          </div>
-          <div class="section">
-            <h2 class="section-title">✓ Why Choose Myra Foods?</h2>
-            <div style="display: flex; gap: 15px; margin-top: 15px;">
-              <div style="flex: 1;"><span class="badge">✓ Fresh Quality</span><p style="font-size: 13px; color: #666; margin-top: 5px;">Sourced fresh daily</p></div>
-              <div style="flex: 1;"><span class="badge">✓ Fast Delivery</span><p style="font-size: 13px; color: #666; margin-top: 5px;">30-45 minutes</p></div>
-              <div style="flex: 1;"><span class="badge">✓ Secure Payment</span><p style="font-size: 13px; color: #666; margin-top: 5px;">100% Safe</p></div>
-            </div>
-          </div>
-          <div style="background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; border-radius: 4px; margin: 20px 0;">
-            <p style="font-size: 14px; color: #2e7d32; line-height: 1.6;">
-              <strong>Need Help?</strong><br>
-              📧 Email: <a href="mailto:sanjaibalasubramaniam26@gmail.com" style="color: #16a34a; text-decoration: none;">sanjaibalasubramaniam26@gmail.com</a><br>
-              💬 WhatsApp: Available 8 AM - 10 PM
-            </p>
-          </div>
-        </div>
-        <div class="footer">
-          <p>© 2025 Myra Foods. All rights reserved.</p>
-          <p style="margin-top: 10px;">Thank you for ordering with us! 🙏</p>
-        </div>
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - Myra Foods</title>
+  </head>
+  <body style="font-family: system, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 40px; background-color: #f5f5f5; color: #333;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: white; border-radius: 8px; padding: 32px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+      <div style="text-align: center; margin-bottom: 32px;">
+        <img src="https://your-logo-url.com" alt="Myra Foods" style="width: 120px;">
       </div>
-    </body>
-    </html>
+      
+      <h1 style="color: #0f172a; font-size: 24px; font-weight: 700; margin: 0 0 24px;">Order Confirmation</h1>
+      
+      <p style="color: #4b5563; line-height: 1.6;">
+        Dear ${order.customerDetails.name},
+      </p>
+      
+      <p style="color: #4b5563; line-height: 1.6;">
+        Thank you for your order! We're excited to prepare your delicious selection. Here's a summary of your order:
+      </p>
+
+      <div style="margin: 24px 0; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+          <thead style="background-color: #f8fafc;">
+            <tr>
+              <th style="padding: 16px; color: #6b7280;">Item</th>
+              <th style="padding: 16px; text-align: center; color: #6b7280;">Quantity</th>
+              <th style="padding: 16px; text-align: right; color: #6b7280;">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${itemsHTML}
+          </tbody>
+          <tfoot style="background-color: #f8fafc;">
+            <tr>
+              <td style="padding: 16px; font-weight: 700;">Total</td>
+              <td></td>
+              <td style="padding: 16px; text-align: right; color: #16a34a; font-weight: 700;">₹${order.total.toFixed(0)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div style="margin: 24px 0; padding: 24px; background-color: #f8fafc; border-radius: 8px;">
+        <h2 style="color: #0f172a; font-size: 18px; font-weight: 600; margin: 0 0 16px;">Delivery Details</h2>
+        <p style="color: #4b5563; line-height: 1.6; margin: 0;">
+          ${order.customerDetails.address}
+        </p>
+      </div>
+
+      <p style="color: #4b5563; line-height: 1.6;">
+        We'll process your order and send you another email with the delivery details. If you have any questions, please don't hesitate to contact us.
+      </p>
+
+      <p style="color: #4b5563; line-height: 1.6; margin-top: 24px;">
+        Best regards,<br>
+        The Myra Foods Team
+      </p>
+    </div>
+  </body>
+  </html>
   `;
 };
 
-// Generate Admin Email HTML
+// Admin notification email
 const generateAdminEmail = (order) => {
   const itemsHTML = order.items
     .map(
       (item) => `
-    <tr style="border-bottom: 1px solid #e5e5e5;">
-      <td style="padding: 12px; border-right: 1px solid #e5e5e5;">${item.name}</td>
-      <td style="padding: 12px; text-align: center; border-right: 1px solid #e5e5e5;">×${item.quantity}</td>
-      <td style="padding: 12px; text-align: right;">₹${
-        (parseInt(item.price.replace('₹', '')) * item.quantity).toFixed(0)
-      }</td>
+    <tr>
+      <td>${item.name}</td>
+      <td>${item.quantity}</td>
+      <td>₹${(parseInt(item.price.replace('₹', '')) * item.quantity).toFixed(0)}</td>
     </tr>
   `
     )
     .join('');
 
   return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="UTF-8">
-      <style>
-        body { font-family: Arial, sans-serif; background: #f5f5f5; }
-        .container { max-width: 700px; margin: 20px auto; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .header { background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%); color: white; padding: 20px; text-align: center; }
-        .content { padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th { background: #f3f4f6; padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #e5e7eb; }
-        .info-section { background: #f9fafb; padding: 15px; margin: 15px 0; border-radius: 4px; }
-        .info-row { display: flex; justify-content: space-between; margin: 8px 0; }
-        .label { font-weight: 600; color: #333; }
-        .value { color: #666; }
-        .total-section { background: #fff3cd; padding: 15px; border-radius: 4px; margin: 20px 0; border-left: 4px solid #ffc107; }
-        .total-row { display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; color: #16a34a; }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <div class="header">
-          <h2>🎉 New Order Received!</h2>
-          <p>Order ID: <strong>${order.id}</strong></p>
-        </div>
-        <div class="content">
-          <div class="info-section">
-            <h3 style="margin: 0 0 10px 0; color: #333;">👤 Customer Details</h3>
-            <div class="info-row">
-              <span class="label">Name:</span>
-              <span class="value">${order.customerName}</span>
-            </div>
-            <div class="info-row">
-              <span class="label">Email:</span>
-              <span class="value"><a href="mailto:${order.customerEmail}">${order.customerEmail}</a></span>
-            </div>
-            <div class="info-row">
-              <span class="label">Phone:</span>
-              <span class="value"><a href="tel:${order.customerPhone}">${order.customerPhone}</a></span>
-            </div>
-            <div class="info-row">
-              <span class="label">Address:</span>
-              <span class="value">${order.deliveryAddress}</span>
-            </div>
-            <div class="info-row">
-              <span class="label">Order Time:</span>
-              <span class="value">${order.orderTime}</span>
-            </div>
-          </div>
-
-          <h3 style="color: #333; margin-top: 20px;">📦 Order Items</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Item Name</th>
-                <th style="text-align: center;">Quantity</th>
-                <th style="text-align: right;">Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${itemsHTML}
-            </tbody>
-          </table>
-
-          <div class="total-section">
-            <div class="info-row" style="margin-bottom: 10px;">
-              <span>Subtotal (${order.items.length} items):</span>
-              <span>₹${order.subtotal}</span>
-            </div>
-            <div class="info-row" style="margin-bottom: 10px;">
-              <span>Delivery Fee:</span>
-              <span>${order.deliveryFee === 0 ? '🎉 FREE' : '₹' + order.deliveryFee}</span>
-            </div>
-            <div class="info-row" style="margin-bottom: 10px;">
-              <span>Tax:</span>
-              <span>₹${order.tax}</span>
-            </div>
-            <div class="total-row">
-              <span>TOTAL AMOUNT:</span>
-              <span>₹${order.total}</span>
-            </div>
-          </div>
-
-          <div style="background: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; border-radius: 4px; margin-top: 20px;">
-            <p style="margin: 5px 0; font-size: 14px; color: #1565c0;"><strong>⚡ Action Required:</strong></p>
-            <p style="margin: 5px 0; font-size: 13px; color: #1976d2;">Please prepare and dispatch this order as soon as possible.</p>
-          </div>
-        </div>
-      </div>
-    </body>
-    </html>
+    <h2>New Order Received</h2>
+    <h3>Customer Details:</h3>
+    <p>Name: ${order.customerDetails.name}</p>
+    <p>Email: ${order.customerDetails.email}</p>
+    <p>Phone: ${order.customerDetails.phone}</p>
+    <p>Address: ${order.customerDetails.address}</p>
+    
+    <h3>Order Details:</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${itemsHTML}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2"><strong>Total</strong></td>
+          <td><strong>₹${order.total.toFixed(0)}</strong></td>
+        </tr>
+      </tfoot>
+    </table>
   `;
 };
 
 // Routes
-app.get('/cart', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'cart.html'));
-});
-
-// Create Order and Send Emails
-app.post('/api/orders/create', async (req, res) => {
+app.post('/cart/process-order', async (req, res) => {
   try {
     const order = req.body;
 
-    // Validate order data
-    if (!order.id || !order.customerEmail || !order.items || order.items.length === 0) {
-      return res.status(400).json({ error: 'Invalid order data' });
+    // Validate order
+    if (!order || !order.items || !order.customerDetails) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid order data',
+      });
     }
 
-    // Send customer confirmation email
-    const customerEmailResult = await transporter.sendMail({
-      from: process.env.GMAIL_USER || 'sanjaibalasubramaniam26@gmail.com',
-      to: order.customerEmail,
-      subject: `✅ Order Confirmed - Myra Foods (Order ID: ${order.id})`,
+    // Send confirmation email to customer
+    await transporter.sendMail({
+      from: '"Myra Foods" <sanjaibalasubramaniam26@gmail.com>',
+      to: order.customerDetails.email,
+      subject: 'Order Confirmation - Myra Foods',
       html: generateCustomerEmail(order),
     });
 
-    console.log('✅ Customer email sent:', customerEmailResult.messageId);
-
-    // Send admin notification email
-    const adminEmailResult = await transporter.sendMail({
-      from: process.env.GMAIL_USER || 'sanjaibalasubramaniam26@gmail.com',
-      to: 'sanjaibalasubramaniam26@gmail.com',
-      subject: `📦 New Order - ${order.customerName} (${order.id})`,
+    // Send notification email to admin
+    await transporter.sendMail({
+      from: '"Myra Foods Orders" <sanjaibalasubramaniam26@gmail.com>',
+      to: 'sanjaibalasubramaniam26@gmail.com', // Admin email
+      subject: 'New Order Received - Myra Foods',
       html: generateAdminEmail(order),
     });
 
-    console.log('✅ Admin email sent:', adminEmailResult.messageId);
+    // Generate random order ID
+    const orderId = Math.random().toString(36).substring(2, 15);
 
-    // Log order to console (in production, save to database)
-    console.log('\n📋 ORDER RECEIVED:');
-    console.log('==================');
-    console.log(`Order ID: ${order.id}`);
-    console.log(`Customer: ${order.customerName}`);
-    console.log(`Items: ${order.items.length}`);
-    console.log(`Total: ₹${order.total}`);
-    console.log('==================\n');
-
-    res.status(200).json({
+    res.json({
       success: true,
-      message: 'Order placed successfully',
-      orderId: order.id,
+      message: 'Order processed successfully',
+      orderId,
     });
   } catch (error) {
-    console.error('❌ Error creating order:', error);
+    console.error('Error processing order:', error);
     res.status(500).json({
-      error: 'Failed to process order',
-      details: error.message,
+      success: false,
+      message: 'Error processing order',
     });
   }
 });
 
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'Server is running', timestamp: new Date() });
-});
+// Export for testing
+export const adminEmailTemplate = generateAdminEmail;
+export const customerEmailTemplate = generateCustomerEmail;
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🛒 Express server running at http://localhost:${PORT}`);
-  console.log(`📧 Email service configured`);
-  console.log(`✅ Ready to receive orders!`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });
-=======
-const PORT = 3000; // The port your Express server will run on
-
-// Serve static files from a 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Route for your cart page
-app.get('/cart', (req, res) => {
-  // Send the cart.html file when someone visits /cart
-  res.sendFile(path.join(__dirname, 'public', 'cart.html'));
-});
-
-app.listen(PORT, () => {
-  console.log(`🛒 Express server running at http://localhost:${PORT}`);
-});
-
->>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
