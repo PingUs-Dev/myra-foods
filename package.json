@@ -12,8 +12,13 @@
   "dependencies": {
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+<<<<<<< HEAD
     "lucide-react": "^0.344.0",
     "nodemailer": "^7.0.9",
+=======
+    "firebase": "^10.7.1",
+    "lucide-react": "^0.344.0",
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

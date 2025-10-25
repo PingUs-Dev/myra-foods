@@ -1,12 +1,19 @@
 import express from "express";
+<<<<<<< HEAD
 import { fileURLToPath } from "url";
 import path from "path";
 import nodemailer from "nodemailer";
+=======
+import {fileURLToPath} from "url";
+import path from "path";
+
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+<<<<<<< HEAD
 const PORT = 3000;
 
 // Middleware
@@ -347,3 +354,20 @@ app.listen(PORT, () => {
   console.log(`📧 Email service configured`);
   console.log(`✅ Ready to receive orders!`);
 });
+=======
+const PORT = 3000; // The port your Express server will run on
+
+// Serve static files from a 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Route for your cart page
+app.get('/cart', (req, res) => {
+  // Send the cart.html file when someone visits /cart
+  res.sendFile(path.join(__dirname, 'public', 'cart.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`🛒 Express server running at http://localhost:${PORT}`);
+});
+
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f

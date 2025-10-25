@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import { useCart } from './CartProvider';
 import { Plus, Minus, Trash2, ShoppingBag, ArrowRight, Tag, Clock, CheckCircle, X } from 'lucide-react';
@@ -28,6 +29,15 @@ const Cart: React.FC = () => {
     phone: '',
     address: '123 Main Street, City',
   });
+=======
+import React from 'react';
+import { useCart } from './CartProvider';
+import { Plus, Minus, Trash2, ShoppingBag, ArrowRight, Tag, Clock } from 'lucide-react';
+import Header from './Header';
+
+const Cart: React.FC = () => {
+  const { cartItems, updateQuantity, removeFromCart, getTotalItems, getTotalPrice, clearCart } = useCart();
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
 
   if (cartItems.length === 0) {
     return (
@@ -69,6 +79,7 @@ const Cart: React.FC = () => {
 
   const subtotal = getTotalPrice();
   const deliveryFee = subtotal >= 500 ? 0 : 49;
+<<<<<<< HEAD
   const tax = Math.round(subtotal * 0.05);
   const total = subtotal + deliveryFee + tax;
   const savings = subtotal >= 500 ? 49 : 0;
@@ -197,6 +208,12 @@ const Cart: React.FC = () => {
     );
   }
 
+=======
+  const tax = Math.round(subtotal * 0.05); // 5% tax
+  const total = subtotal + deliveryFee + tax;
+  const savings = subtotal >= 500 ? 49 : 0;
+
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -220,6 +237,7 @@ const Cart: React.FC = () => {
 
                   return (
                     <div key={item.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+<<<<<<< HEAD
                       <div className="flex-shrink-0">
                         <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-yellow-100 rounded-xl flex items-center justify-center">
                           {typeof item.image === 'string' && item.image.startsWith('http') ? (
@@ -230,6 +248,16 @@ const Cart: React.FC = () => {
                         </div>
                       </div>
 
+=======
+                      {/* Product Image */}
+                      <div className="flex-shrink-0">
+                        <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-yellow-100 rounded-xl flex items-center justify-center">
+                          <span className="text-3xl">{item.image}</span>
+                        </div>
+                      </div>
+
+                      {/* Product Details */}
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-gray-900 text-lg">{item.name}</h3>
                         <p className="text-gray-600 text-sm line-clamp-2">{item.description}</p>
@@ -239,6 +267,10 @@ const Cart: React.FC = () => {
                         </div>
                       </div>
 
+<<<<<<< HEAD
+=======
+                      {/* Quantity Controls */}
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
                       <div className="flex items-center space-x-3">
                         <div className="flex items-center bg-white rounded-lg border border-gray-200">
                           <button
@@ -257,6 +289,10 @@ const Cart: React.FC = () => {
                         </div>
                       </div>
 
+<<<<<<< HEAD
+=======
+                      {/* Item Total & Remove */}
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
                       <div className="text-right">
                         <div className="font-bold text-xl text-gray-900">₹{itemTotal}</div>
                         <button
@@ -271,6 +307,10 @@ const Cart: React.FC = () => {
                   );
                 })}
 
+<<<<<<< HEAD
+=======
+                {/* Clear Cart Button */}
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
                 <div className="pt-4 border-t border-gray-200">
                   <button
                     onClick={clearCart}
@@ -296,13 +336,21 @@ const Cart: React.FC = () => {
                 </div>
                 <div className="bg-blue-50 p-4 rounded-xl">
                   <div className="font-medium text-blue-800">Delivery Address</div>
+<<<<<<< HEAD
                   <div className="text-blue-700 text-sm">Will be confirmed at checkout</div>
+=======
+                  <div className="text-blue-700 text-sm">123 Main Street, City</div>
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
                 </div>
               </div>
             </div>
           </div>
 
+<<<<<<< HEAD
           {/* Order Summary & Checkout */}
+=======
+          {/* Order Summary */}
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden sticky top-24">
               <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 p-6">
@@ -378,10 +426,14 @@ const Cart: React.FC = () => {
                 </div>
 
                 {/* Checkout Button */}
+<<<<<<< HEAD
                 <button
                   onClick={() => setShowCheckoutForm(true)}
                   className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
                 >
+=======
+                <button className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
                   Proceed to Checkout
                 </button>
 
@@ -428,6 +480,7 @@ const Cart: React.FC = () => {
           </div>
         </div>
       </div>
+<<<<<<< HEAD
 
       {/* Checkout Modal */}
       {showCheckoutForm && (
@@ -546,6 +599,8 @@ const Cart: React.FC = () => {
           </div>
         </div>
       )}
+=======
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
     </div>
   );
 };

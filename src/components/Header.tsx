@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+// src/components/Header.tsx - REPLACE YOUR EXISTING FILE WITH THIS
+
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
 import React, { useState } from 'react';
 import { ShoppingCart, Menu, X, Phone } from 'lucide-react';
 import { useCart } from './CartProvider';
@@ -7,10 +12,17 @@ const Header = () => {
   const { getTotalItems, getTotalPrice } = useCart();
 
   const navItems = [
+<<<<<<< HEAD
     { name: 'Corporate', href: '#snack-boxes' },
     { name: 'Festive & other events', href: '#event-boxes' },
     { name: 'Birthday', href: '#catering' },
     { name: 'Create Your Own Box', href: '#own-box' },
+=======
+    { name: 'All Products', href: '/products' },
+    { name: 'Corporate', href: '#snack-boxes' },
+    { name: 'Festive & other events', href: '#event-boxes' },
+    { name: 'Birthday', href: '#catering' },
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
     { name: 'Catering', href: '#other-products' },
   ];
 
@@ -26,6 +38,28 @@ const Header = () => {
     window.dispatchEvent(new CustomEvent('navigate'));
   };
 
+<<<<<<< HEAD
+=======
+  const navigateToProducts = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.history.pushState({}, '', '/products');
+    window.dispatchEvent(new CustomEvent('navigate'));
+  };
+
+  const handleNavClick = (e: React.MouseEvent, item: any) => {
+    if (item.href === '/products') {
+      navigateToProducts(e);
+    } else if (item.href.startsWith('#')) {
+      if (window.location.pathname !== '/') {
+        navigateToHome(e);
+        setTimeout(() => {
+          document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  };
+
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -46,6 +80,7 @@ const Header = () => {
               <a
                 key={item.name}
                 href={item.href}
+<<<<<<< HEAD
                 onClick={(e) => {
                   // If we're on cart page, go to home first
                   if (window.location.pathname === '/cart') {
@@ -55,6 +90,9 @@ const Header = () => {
                     }, 100);
                   }
                 }}
+=======
+                onClick={(e) => handleNavClick(e, item)}
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
                 className="text-gray-700 hover:text-green-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
               >
                 {item.name}
@@ -68,7 +106,11 @@ const Header = () => {
               <Phone className="h-4 w-4" />
               <a href="mailto:sanjaibalasubramaniam26@gmail.com" className="text-sm">Contact</a>
             </div>
+<<<<<<< HEAD
             {/* Cart Button with Items Count and Total */}
+=======
+            {/* Cart Button */}
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
             <button
               onClick={navigateToCart}
               className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2 relative"
@@ -92,7 +134,10 @@ const Header = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-3">
+<<<<<<< HEAD
             {/* Mobile Cart Button */}
+=======
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
             <button
               onClick={navigateToCart}
               className="relative bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-lg"
@@ -125,12 +170,16 @@ const Header = () => {
                   className="text-gray-700 hover:text-green-700 px-3 py-2 rounded-md text-base font-medium"
                   onClick={(e) => {
                     setIsMenuOpen(false);
+<<<<<<< HEAD
                     if (window.location.pathname === '/cart') {
                       navigateToHome(e);
                       setTimeout(() => {
                         document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
                       }, 100);
                     }
+=======
+                    handleNavClick(e, item);
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
                   }}
                 >
                   {item.name}
@@ -141,7 +190,10 @@ const Header = () => {
                   <Phone className="h-4 w-4" />
                   <a href="mailto:sanjaibalasubramaniam26@gmail.com" className="text-sm">Contact</a>
                 </div>
+<<<<<<< HEAD
                 {/* Mobile Cart Info */}
+=======
+>>>>>>> 9c3f91f6b171c92caeada8bb6937f3780576dd0f
                 <div className="text-right">
                   <div className="text-sm font-medium text-gray-700">
                     {getTotalItems()} items
