@@ -12,7 +12,7 @@ interface CheckoutForm {
 
 interface OrderConfirmation {
   orderId: string;
-  status: 'pending' | 'success' | 'error';
+  status: 'success' | 'error';
   message: string;
 }
 
@@ -28,6 +28,114 @@ const Cart: React.FC = () => {
     phone: '',
     address: '',
   });
+
+  const handleCheckout = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!checkoutForm.name || !checkoutForm.email || !checkoutForm.phone || !checkoutForm.address) {
+      alert('Please fill all delivery details');
+      return;
+    }
+
+    setIsCheckingOut(true);
+
+    try {
+      const orderData = {
+        items: cartItems.map(item => ({
+          ...item,
+          price: item.price.replace('₹', '')
+        })),
+        customerDetails: {
+          name: checkoutForm.name,
+          email: checkoutForm.email,
+          phone: checkoutForm.phone,
+          address: checkoutForm.address,
+        },
+        total: getTotalPrice(),
+      };
+
+      const response = await fetch('/cart/process-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setOrderConfirmation({
+          orderId: result.orderId,
+          status: 'success',
+          message: 'Order placed successfully! Check your email for confirmation.',
+        });
+        clearCart();
+      } else {
+        setOrderConfirmation({
+          orderId: '',
+          status: 'error',
+          message: result.message || 'Failed to place order. Please try again.',
+        });
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      setOrderConfirmation({
+        orderId: '',
+        status: 'error',
+        message: 'An error occurred. Please try again.',
+      });
+    } finally {
+      setIsCheckingOut(false);
+      setShowCheckoutForm(false);
+    }
+  };
+
+  if (orderConfirmation) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="max-w-md w-full mx-auto mt-20 bg-white rounded-2xl shadow-2xl p-8 text-center">
+          {orderConfirmation.status === 'success' ? (
+            <>
+              <div className="text-6xl mb-4">✅</div>
+              <h2 className="text-3xl font-bold text-green-600 mb-2">Order Confirmed!</h2>
+              <p className="text-gray-600 mb-6 text-lg">{orderConfirmation.message}</p>
+              <div className="bg-green-50 p-6 rounded-lg mb-6 border-2 border-green-200">
+                <p className="text-sm text-gray-600 mb-2">Order ID:</p>
+                <p className="text-2xl font-bold text-green-700 font-mono break-all">{orderConfirmation.orderId}</p>
+              </div>
+              <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                <p className="text-sm text-blue-800">📧 Confirmation email sent to:</p>
+                <p className="text-sm font-semibold text-blue-900">{checkoutForm.email}</p>
+              </div>
+              <div className="space-y-3">
+                <button
+                  onClick={() => {
+                    setOrderConfirmation(null);
+                    window.location.href = '/';
+                  }}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-colors"
+                >
+                  Continue Shopping
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="text-6xl mb-4">❌</div>
+              <h2 className="text-2xl font-bold text-red-600 mb-2">Order Failed</h2>
+              <p className="text-gray-600 mb-6">{orderConfirmation.message}</p>
+              <button
+                onClick={() => setOrderConfirmation(null)}
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-colors"
+              >
+                Try Again
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   if (cartItems.length === 0) {
     return (
@@ -72,130 +180,6 @@ const Cart: React.FC = () => {
   const tax = Math.round(subtotal * 0.05);
   const total = subtotal + deliveryFee + tax;
   const savings = subtotal >= 500 ? 49 : 0;
-
-  const handleCheckout = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!checkoutForm.name || !checkoutForm.email || !checkoutForm.phone || !checkoutForm.address) {
-      alert('Please fill all delivery details');
-      return;
-    }
-
-    setIsCheckingOut(true);
-
-    try {
-      const orderId = `ORD-${Date.now()}`;
-      const orderTime = new Date().toLocaleString('en-IN', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-
-      const orderData = {
-        id: orderId,
-        customerName: checkoutForm.name,
-        customerEmail: checkoutForm.email,
-        customerPhone: checkoutForm.phone,
-        deliveryAddress: checkoutForm.address,
-        items: cartItems,
-        subtotal,
-        deliveryFee,
-        tax,
-        total,
-        orderTime,
-      };
-
-      const response = await fetch('/api/orders/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orderData),
-      });
-
-      if (response.ok) {
-        setOrderConfirmation({
-          orderId,
-          status: 'success',
-          message: 'Order placed successfully! Check your email for confirmation.',
-        });
-        clearCart();
-      } else {
-        setOrderConfirmation({
-          orderId,
-          status: 'error',
-          message: 'Failed to place order. Please try again.',
-        });
-      }
-    } catch (error) {
-      console.error('Checkout error:', error);
-      setOrderConfirmation({
-        orderId: '',
-        status: 'error',
-        message: 'An error occurred. Please try again.',
-      });
-    } finally {
-      setIsCheckingOut(false);
-    }
-  };
-
-  // Show confirmation dialog
-  if (orderConfirmation?.status !== 'pending') {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <div className="max-w-md w-full mx-auto mt-20 bg-white rounded-2xl shadow-2xl p-8 text-center">
-          {orderConfirmation?.status === 'success' ? (
-            <>
-              <div className="text-6xl mb-4">✅</div>
-              <h2 className="text-3xl font-bold text-green-600 mb-2">Order Confirmed!</h2>
-              <p className="text-gray-600 mb-6 text-lg">{orderConfirmation.message}</p>
-              <div className="bg-green-50 p-6 rounded-lg mb-6 border-2 border-green-200">
-                <p className="text-sm text-gray-600 mb-2">Order ID:</p>
-                <p className="text-2xl font-bold text-green-700 font-mono break-all">{orderConfirmation.orderId}</p>
-              </div>
-              <div className="bg-blue-50 p-4 rounded-lg mb-6">
-                <p className="text-sm text-blue-800">📧 Confirmation email sent to:</p>
-                <p className="text-sm font-semibold text-blue-900">{checkoutForm.email}</p>
-              </div>
-              <div className="space-y-3">
-                <button
-                  onClick={() => {
-                    setOrderConfirmation(null);
-                    window.location.href = '/';
-                  }}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-colors"
-                >
-                  Continue Shopping
-                </button>
-                <button
-                  onClick={() => {
-                    setOrderConfirmation(null);
-                    setShowCheckoutForm(false);
-                  }}
-                  className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 rounded-xl transition-colors"
-                >
-                  Back to Cart
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="text-6xl mb-4">❌</div>
-              <h2 className="text-2xl font-bold text-red-600 mb-2">Order Failed</h2>
-              <p className="text-gray-600 mb-6">{orderConfirmation?.message}</p>
-              <button
-                onClick={() => setOrderConfirmation(null)}
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-colors"
-              >
-                Try Again
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">
